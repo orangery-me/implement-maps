@@ -1,0 +1,61 @@
+buildscript {
+    ext.kotlin_version = '1.9.22'
+    repositories {
+        google()
+        mavenCentral()
+        // Mapbox Maven repository
+        maven{
+            url = uri("https://api.mapbox.com/downloads/v2/releases/maven")
+            credentials {
+                // Do not change the username below. It should always be "mapbox" (not your username).
+                username = "mapbox"
+                // Use the secret token stored in gradle.properties as the password
+                password = project.properties['SDK_REGISTRY_TOKEN'] ?: ""
+                authentication { basic(BasicAuthentication) }
+            }
+        }
+    }
+
+    println("SDK_REGISTRY_TOKEN: ${project.properties['SDK_REGISTRY_TOKEN'] ?: ""}")
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        // START: FlutterFire Configuration
+        classpath 'com.google.gms:google-services:4.4.0'
+        // END: FlutterFire Configuration
+        // START: Google Maps Platform Configuration
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
+        // END: Google Maps Platform Configuration
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven{
+            url = uri("https://api.mapbox.com/downloads/v2/releases/maven")
+            credentials {
+                // Do not change the username below. It should always be "mapbox" (not your username).
+                username = "mapbox"
+                // Use the secret token stored in gradle.properties as the password
+                password = project.properties['SDK_REGISTRY_TOKEN'] ?: ""
+                authentication { basic(BasicAuthentication) }
+            }
+        }
+    }
+}
+
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
