@@ -61,7 +61,7 @@ dependencies:
   flutter_polyline_points:
     path: flutter_polyline_points
   google_sign_in: ^6.2.1
-  mapbox_maps_flutter: ^2.2.1
+  mapbox_maps_flutter: ^2.11.0
   
   google_polyline_algorithm: ^3.1.0
   geojson_vi: ^2.2.5
